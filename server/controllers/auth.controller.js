@@ -1,5 +1,7 @@
 import User from "../models/User.model.js";
 import bcryptjs from "bcryptjs";
+import { errorHandler } from "../utils/error.js";
+import jwt from "jsonwebtoken";
 
 //Function to Sign up a New User
 export const signup = async (req, res, next) => {
@@ -11,6 +13,27 @@ export const signup = async (req, res, next) => {
   try {
     await newUser.save();
     res.status(201).json({ message: "User created successfully" }); //Sending the Response
+  } catch (error) {
+    next(error);
+  }
+};
+
+//Function to Sign in an Existing User
+export const signin = async (req, res, next) => {
+  const { email, password } = req.body; //Extracting User Data
+  try {
+    const validUser = await User.findOne({ email }); //Finding the User in the Database
+    if (!validUser) return next(errorHandler(404, "User Not Found")); //Sending the Response(404);
+
+    const validPassword = bcryptjs.compareSync(password, validUser.password); //Comparing the Password
+    if (!validPassword) return next(errorHandler(401, "wrong credentials")); //Sending the Response(401);
+
+    //Function to Generate a JWT Token
+    const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
+    res
+      .cookie("access_token", token, { httpOnly: true })
+      .status(200)
+      .json(validUser);
   } catch (error) {
     next(error);
   }
