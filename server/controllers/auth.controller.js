@@ -30,10 +30,12 @@ export const signin = async (req, res, next) => {
 
     //Function to Generate a JWT Token
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
+    const { password: hashedPassword, ...rest } = validUser._doc;
+    const expiryDate = new Date(Date.now() + 3600000); //Setting the Expiry Date for the Token in 1 Hour
     res
-      .cookie("access_token", token, { httpOnly: true })
+      .cookie("access_token", token, { httpOnly: true, expires: expiryDate })
       .status(200)
-      .json(validUser);
+      .json(rest);
   } catch (error) {
     next(error);
   }
