@@ -19,7 +19,10 @@ function Header() {
           <Link to="/profile">
             {currentUser ? (
               <img
-                src={currentUser.profilePicture1}
+                src={
+                  currentUser?.profilePicture ||
+                  "https://img.freepik.com/free-vector/user-circles-set_78370-4704.jpg?ga=GA1.1.2082689087.1731448230&semt=ais_hybrid"
+                }
                 alt="profile"
                 className="h-7 w-7 rounded-full object-cover"
               />
