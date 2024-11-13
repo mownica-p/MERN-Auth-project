@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import OAuth from "../components/OAuth";
 
 function SignIn() {
-  const [formData, setFormData] = useState({}); // Corrected array destructuring
+  const [formData, setFormData] = useState({ email: "", password: "" }); // Corrected array destructuring
   const { loading, error } = useSelector((state) => state.user);
 
   const navigate = useNavigate(); //initialize navigate
@@ -52,14 +52,14 @@ function SignIn() {
         <input
           type="email"
           placeholder="Email"
-          id="email"
+          value={formData.email}
           className="bg-slate-100 p-3 rounded-lg"
           onChange={handleChange}
         />
         <input
           type="password"
           placeholder="Password"
-          id="password"
+          value={formData.password}
           className="bg-slate-100 p-3 rounded-lg"
           onChange={handleChange}
         />
