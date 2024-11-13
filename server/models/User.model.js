@@ -16,6 +16,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profilePicture: {
+      type: String,
+      default:
+        "https://img.freepik.com/free-vector/user-circles-set_78370-4704.jpg?ga=GA1.1.2082689087.1731448230&semt=ais_hybrid",
+    },
   },
   { timeStamps: true }
 );
